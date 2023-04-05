@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 dotenv.config();
 
 enum AccountType {
@@ -9,10 +9,10 @@ enum AccountType {
 }
 
 export function JWTAuthentication() {
-  const TOKEN_SECRET = process.env.JWT_SECRET;
-  const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
-  const JWT_EXPIRATION = process.env.JWT_EXPIRES_IN;
-  const REFRESH_EXPIRATION = process.env.JWT_REFRESH_EXPIRES_IN;
+  const TOKEN_SECRET = process.env.JWT_SECRET || "";
+  const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || "";
+  const JWT_EXPIRATION = process.env.JWT_EXPIRES_IN || "";
+  const REFRESH_EXPIRATION = process.env.JWT_REFRESH_EXPIRES_IN || "";
 
   const verifyJWTToken = async (token: string) => {
     return await jwt.verify(token, TOKEN_SECRET);
@@ -33,20 +33,25 @@ export function JWTAuthentication() {
   };
 
   const userIsAdmin = async (token: string) => {
+    const payload: JwtPayload = (await jwt.verify(token, TOKEN_SECRET)) as JwtPayload;
     return (
-      (await jwt.verify(token, TOKEN_SECRET).user_type) === AccountType.Admin
+      (payload.user_type) ===
+      AccountType.Admin
     );
   };
 
   const userIsManager = async (token: string) => {
+    const payload: JwtPayload = (await jwt.verify(token, TOKEN_SECRET)) as JwtPayload;
     return (
-      (await jwt.verify(token, TOKEN_SECRET).user_type) === AccountType.Manager
+      (payload.user_type) ===
+      AccountType.Manager
     );
   };
 
   const userIsUser = async (token: string) => {
+    const payload: JwtPayload = (await jwt.verify(token, TOKEN_SECRET)) as JwtPayload;
     return (
-      (await jwt.verify(token, process.env.JWT_SECRET).user_type) ===
+      (payload.user_type) ===
       AccountType.User
     );
   };
