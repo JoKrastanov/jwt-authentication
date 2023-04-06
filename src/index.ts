@@ -18,6 +18,10 @@ export function JWTAuthentication() {
     return await jwt.verify(token, TOKEN_SECRET);
   };
 
+  const verifyRefreshToken = async (token: string) => {
+    return await jwt.verify(token, REFRESH_SECRET);
+  }
+
   const signJWTToken = (userId: string, accountType: AccountType) => {
     const payload = { id: userId, user_type: accountType };
     return jwt.sign(payload, TOKEN_SECRET, {
@@ -58,6 +62,7 @@ export function JWTAuthentication() {
 
   return {
     verifyJWTToken,
+    verifyRefreshToken,
     signJWTToken,
     signJWTRefreshToken,
     userIsAdmin,
