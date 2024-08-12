@@ -1,6 +1,6 @@
 {
   "name": "authentication-validation",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.0.3",
     "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
